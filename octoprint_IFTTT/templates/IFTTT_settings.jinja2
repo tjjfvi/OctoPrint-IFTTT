@@ -1,0 +1,49 @@
+<form class="form-horizontal">
+	<h4>{{ _('Makerkeys') }}</h4>
+	<div class="control-group">
+		<label class="control-label">{{ _('Makerkeys') }}</label>
+		<div class="controls">
+			<textarea data-bind="value: makerkeys"></textarea>
+		</div>
+	</div>
+	<h4>{{ _('Default Prefixes') }}</h4>
+	<div class="control-group">
+		<label class="control-label">{{ _('Default prefixes') }}</label>
+		<div class="controls">
+			<textarea data-bind="value: defaultPrefixes"></textarea>
+		</div>
+	</div>
+	<h4>{{ _('Events & triggers') }}</h4>
+	<div class="table-responsive">
+		<table class="table">
+			<thead><tr>
+				<th><span>{{ _('Event Name') }}</span></th>
+				<th><span>{{ _('Trigger Names') }}</span></th>
+				<th><span>{{ _('Value1') }}</span></th>
+				<th><span>{{ _('Value2') }}</span></th>
+				<th><span>{{ _('Value3') }}</span></th>
+				<th style="flex-shrink: 0; max-width: 37px;"></th>
+			</tr></thead>
+			<tbody>
+				<!-- ko foreach: events -->
+					<tr data-bind="with: new $root.Event($data)">
+						<td><input type="text" data-bind="value: name"></input></td>
+						<td><textarea spellcheck="false" style="resize: none" data-bind="value: triggerNames, attr: { placeholder }"></textarea></td>
+						<td class="value"><input type="text" data-bind="value: value1"></input></td>
+						<td class="value"><input type="text" data-bind="value: value2"></input></td>
+						<td class="value"><input type="text" data-bind="value: value3"></input></td>
+						<td style="flex-shrink: 0; width: 37px;">
+							<button class="btn btn-danger" title="Remove" data-bind="click: remove">
+								<i class="fa fa-minus"></i>
+							</button>
+						</td>
+					</tr>
+				<!-- /ko -->
+				<tr style="justify-content: flex-end;"><td style="flex-grow: 0 ;padding: 0; border: 0;">
+					<button class="btn btn-primary" title="Add new" data-bind="click: newEvent">
+						<i class="fa fa-plus"></i>
+					</button>
+			</tbody>
+		</table>
+	</div>
+</form>

@@ -1,0 +1,4 @@
+include README.md
+recursive-include octoprint_IFTTT/templates *
+recursive-include octoprint_IFTTT/translations *
+recursive-include octoprint_IFTTT/static *

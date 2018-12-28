@@ -1,0 +1,30 @@
+#settings_plugin_IFTTT tbody, #settings_plugin_IFTTT thead {
+	display: flex;
+	flex-direction: column;
+}
+
+#settings_plugin_IFTTT tr {
+	display: flex;
+	align-items: center;
+}
+
+#settings_plugin_IFTTT td, #settings_plugin_IFTTT th {
+	flex-grow: 1;
+	flex-shrink: 5;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+}
+
+#settings_plugin_IFTTT td.value {
+	flex-shrink: 100;
+}
+
+#settings_plugin_IFTTT td input, #settings_plugin_IFTTT th span {
+	display: inline-block;
+	width: 100%;
+	height: auto;
+	box-sizing: border-box;
+}
