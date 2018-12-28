@@ -9,8 +9,7 @@
 }
 
 #settings_plugin_IFTTT td, #settings_plugin_IFTTT th {
-	flex-grow: 1;
-	flex-shrink: 5;
+	flex: 1 1 0;
 	height: 100%;
 	display: flex;
 	align-items: center;
@@ -18,8 +17,8 @@
 	box-sizing: border-box;
 }
 
-#settings_plugin_IFTTT td.value {
-	flex-shrink: 100;
+#settings_plugin_IFTTT td.value, #settings_plugin_IFTTT th.value {
+	flex-grow: .5;
 }
 
 #settings_plugin_IFTTT td input, #settings_plugin_IFTTT th span {
