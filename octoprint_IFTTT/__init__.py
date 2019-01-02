@@ -26,6 +26,7 @@ class IFTTTplugin(
 				trigger_names = [prefix + event_name for prefix in default_prefixes]
 
 			values = [self._interpret_value(payload, value) for value in event["values"]]
+			values = values + [""] * (3 - len(values))
 			payload = { "value1": values[0], "value2": values[1], "value3": values[2] }
 
 			for trigger_name in trigger_names:
