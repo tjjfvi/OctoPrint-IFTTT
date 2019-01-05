@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 import octoprint
 import requests
-from datauri import DataURI
+#from datauri import DataURI
 
 class IFTTTplugin(
 	octoprint.plugin.StartupPlugin,
@@ -48,11 +48,11 @@ class IFTTTplugin(
 			return payload[value[1:]]
 		if value[0] == ":":
 			return value[1:]
-		if value[0] == "@":
-			path = self._interpret_value(payload, value[(2 if value[1] in "-f" else 1):])
-			if value[1] == "f":
-				path = self._storage_interface.path_on_disk(path)
-			return DataURI.from_file(path)
+		#if value[0] == "@":
+			#path = self._interpret_value(payload, value[(2 if value[1] in "-f" else 1):])
+			#if value[1] == "f":
+			#	path = self._storage_interface.path_on_disk(path)
+			#return DataURI.from_file(path)
 		return value
 
 	def get_settings_defaults(self):
