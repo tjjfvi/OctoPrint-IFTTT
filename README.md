@@ -9,6 +9,8 @@ or manually using this URL:
 
     https://github.com/tjjfvi/OctoPrint-IFTTT/archive/master.zip
 
+Then follow the steps listed [here](https://github.com/tjjfvi/OctoPrint-IFTTT/wiki).
+
 ## Configuration
 
 ### Makerkeys
