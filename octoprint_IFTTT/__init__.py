@@ -3,7 +3,6 @@ from __future__ import absolute_import
 
 import octoprint
 import requests
-#from datauri import DataURI
 
 class IFTTTplugin(
 	octoprint.plugin.StartupPlugin,
@@ -15,7 +14,7 @@ class IFTTTplugin(
 	def on_after_startup(self):
 		self._storage_interface = self._file_manager._storage("local")
 
-	def on_event(self, event_name, payload):
+	def on_event(self, event_name, event_payload):
 		events = self._settings.get(["events"])
 		default_prefixes = self._settings.get(["default_prefixes"])
 		makerkeys = self._settings.get(["makerkeys"])
@@ -29,11 +28,12 @@ class IFTTTplugin(
 			if not len(trigger_names):
 				trigger_names = [prefix + event_name for prefix in default_prefixes]
 
-			values = [self._interpret_value(payload, value) for value in event["values"]]
-			payload = { "value1": values[0], "value2": values[1], "value3": values[2] }
+			value_thunks = [self._interpret_value(event_payload, value) for value in event["values"]]
+			payload_thunk = lambda: { "value1": value_thunks[0](), "value2": value_thunks[1](), "value3": value_thunks[2]() }
 
 			for trigger_name in trigger_names:
 				for makerkey in makerkeys:
+					payload = payload_thunk()
 					url = "https://maker.ifttt.com/trigger/%s/with/key/%s" % (trigger_name, makerkey)
 					self._logger.info("sending a request to url: %s, payload: %s" % (url.replace(makerkey, "[REDACTED; %s...]" % makerkey[:8]), payload));
 
@@ -41,19 +41,26 @@ class IFTTTplugin(
 					self._logger.info("response: " + response.text)
 
 	def _interpret_value(self, payload, value):
+		to_thunk = lambda x: lambda: x
 		self._logger.info(value)
+
 		if len(value) == 0:
-			return ""
+			return to_thunk("")
+
 		if value[0] == ".":
-			return payload[value[1:]]
+			return to_thunk(payload[value[1:]])
+
 		if value[0] == ":":
-			return value[1:]
-		#if value[0] == "@":
-			#path = self._interpret_value(payload, value[(2 if value[1] in "-f" else 1):])
-			#if value[1] == "f":
-			#	path = self._storage_interface.path_on_disk(path)
-			#return DataURI.from_file(path)
-		return value
+			return to_thunk(value[1:])
+
+		if value[0] == "@":
+			path = self._interpret_value(payload, value[2:])()
+			if value[1] == "f":
+				path = self._storage_interface.path_on_disk(path)
+
+			return lambda: requests.post("https://file.io", files={ "file": open(path, "rb") }).json()["link"]
+
+		return to_thunk(value)
 
 	def get_settings_defaults(self):
 		return dict(

@@ -28,5 +28,10 @@ A list of triggers to trigger on IFTTT.
 #### Values
 IFTTT Webhooks allows for a payload with three values. It will interpret this string like so:
  - If the value begins with a dot (`.`), it will use that prop of the event payload (e.g. `.name` for `PrintDone`)
+ - If it begins with an at symbol (`@`):
+    - `path` will be the result of interpreting the string with the first two characters removed as a value
+    - If the second character in the value is an `f` it will prepend to `path` the base uploads folder
+    - Otherwise, the second character should be a dash (`-`)
+    - It will then upload the file at `path` to [file.io](https://file.io) and return a link to that file.
  - If it begins with a colon (`:`) it will use the string after the colon
  - Otherwise it will just send the plain text
