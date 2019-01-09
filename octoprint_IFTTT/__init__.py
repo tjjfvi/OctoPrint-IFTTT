@@ -28,7 +28,7 @@ class IFTTTplugin(
 			if not len(trigger_names):
 				trigger_names = [prefix + event_name for prefix in default_prefixes]
 
-			value_thunks = [self._interpret_value(event_payload, value) for value in event["values"]]
+			value_thunks = [self._interpret_value(event_payload, value) for value in event["values"] + [""] * (3 - len(event["values"]))]
 			payload_thunk = lambda: { "value1": value_thunks[0](), "value2": value_thunks[1](), "value3": value_thunks[2]() }
 
 			for trigger_name in trigger_names:
