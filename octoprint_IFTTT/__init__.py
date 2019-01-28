@@ -59,7 +59,27 @@ class IFTTTplugin(
 				path = self._storage_interface.path_on_disk(path)
 
 			return lambda: requests.post("https://file.io", files={ "file": open(path, "rb") }).json()["link"]
-
+		if value[0] == "$":
+			if value[1] == "t":
+				t = self._interpret_value(payload, value[3:])()
+				s = str(int(t)%60)
+				m = str(int(t/60)%60)
+				h = str(int(t/3600))
+				sf = s.zfill(2)
+				mf = m.zfill(2)
+				hf = h.zfill(2)
+				
+				if value[2] == "$":
+					return to_thunk('%s:%s:%s' % (hf, mf, sf))
+				if value[2] == ":":
+					return to_thunk('%s:%s' % (hf, mf))
+				if value[2] == "h":
+					return to_thunk('%sh' % (h))
+				if value[2] == "m":
+					return to_thunk('%sh %sm' % (h, m))
+				if value[2] == "s":
+					return to_thunk('%sh %sm %ss' % (h, m, s))
+				return to_thunk(str(t))
 		return to_thunk(value)
 
 	def get_settings_defaults(self):
