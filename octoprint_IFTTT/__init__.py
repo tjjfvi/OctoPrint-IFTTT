@@ -22,7 +22,7 @@ class IFTTTplugin(
         for event in events:
             if event["event_name"] != event_name: continue
 
-            trigger_names = event["trigger_names"]
+            trigger_names = filter(lambda name: name.strip(), event["trigger_names"])
 
             if not len(trigger_names):
                 trigger_names = [prefix + event_name for prefix in default_prefixes]
