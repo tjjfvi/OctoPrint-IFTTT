@@ -127,6 +127,7 @@ class IFTTTplugin(
         )
 
 __plugin_name__ = "OctoPrint-IFTTT"
+__plugin_pythoncompat__ = ">=2.7,<4"  # python 2 and 3
 
 def __plugin_load__():
     global __plugin_implementation__
