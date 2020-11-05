@@ -22,9 +22,9 @@ class IFTTTplugin(
         for event in events:
             if event["event_name"] != event_name: continue
 
-            trigger_names = filter(lambda name: name.strip(), event["trigger_names"])
+            trigger_names = list(filter(lambda name: name.strip(), event["trigger_names"]))
 
-            if not len(trigger_names):
+            if not trigger_names:
                 trigger_names = [prefix + event_name for prefix in default_prefixes]
 
             value_thunks = [self._interpret_value(event_payload, value) for value in event["values"] + [""] * (3 - len(event["values"]))]
@@ -68,10 +68,10 @@ class IFTTTplugin(
                 sf = s.zfill(2)
                 mf = m.zfill(2)
                 hf = h.zfill(2)
-                
+
                 if value[2] == "$":
                     return to_thunk('%s:%s:%s' % (hf, mf, sf))
-                    
+
                 if value[2] == ":":
                     return to_thunk('%s:%s' % (hf, mf))
 
