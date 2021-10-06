@@ -18,6 +18,7 @@ class IFTTTplugin(
         events = self._settings.get(["events"])
         default_prefixes = self._settings.get(["default_prefixes"])
         makerkeys = self._settings.get(["makerkeys"])
+        webhook = self._settings.get(["webhook"])
 
         for event in events:
             if event["event_name"] != event_name: continue
@@ -31,6 +32,13 @@ class IFTTTplugin(
             payload_thunk = lambda: { "value1": value_thunks[0](), "value2": value_thunks[1](), "value3": value_thunks[2]() }
 
             for trigger_name in trigger_names:
+                if webhook:
+                    payload = payload_thunk()
+                    self._logger.info("sending a request to url: %s, payload: %s" % (webhook, payload));
+
+                    response = requests.post(webhook, json=payload)
+                    self._logger.info("response: " + response.text)
+
                 for makerkey in makerkeys:
                     payload = payload_thunk()
                     url = "https://maker.ifttt.com/trigger/%s/with/key/%s" % (trigger_name, makerkey)

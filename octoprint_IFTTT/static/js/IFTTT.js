@@ -9,6 +9,11 @@ $(function() {
 			write: mks => self.startupComplete() && self.settings.makerkeys(mks.split("\n")),
 		});
 
+		self.webhook = ko.computed({
+			read: () => self.startupComplete() && self.settings.webhook(),
+			write: mks => self.startupComplete() && self.settings.webhook(mks),
+		});
+
 		self.defaultPrefixes = ko.computed({
 			read: () => self.startupComplete() && self.settings.default_prefixes().join("\n"),
 			write: dps => self.startupComplete() && self.settings.default_prefixes(dps.split("\n")),
