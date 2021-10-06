@@ -49,7 +49,7 @@ class IFTTTplugin(
         if value[0] == ".":
             if value[1:]
                 return to_thunk(payload[value[1:]])
-            else
+            else:
                 return to_thunk(payload);
 
         if value[0] == ":":
