@@ -34,7 +34,7 @@ class IFTTTplugin(
             for trigger_name in trigger_names:
                 if webhook:
                     payload = payload_thunk()
-                    self._logger.info("sending a request to url: %s, payload: %s" % (webhook, payload));
+                    self._logger.info("sending a request to url: %s, payload: %s" % (webhook, payload))
 
                     response = requests.post(webhook, json=payload)
                     self._logger.info("response: " + response.text)
@@ -99,6 +99,7 @@ class IFTTTplugin(
     def get_settings_defaults(self):
         return dict(
             makerkeys=[],
+            webhook="",
             default_prefixes = ["OctoPrint-", "op-"],
             events=[
                 dict(event_name="PrintDone", trigger_names=[], values=[".name", ".time", ".origin"]),
