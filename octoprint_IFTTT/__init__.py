@@ -29,16 +29,16 @@ class IFTTTplugin(
                 trigger_names = [prefix + event_name for prefix in default_prefixes]
 
             value_thunks = [self._interpret_value(event_payload, value) for value in event["values"] + [""] * (3 - len(event["values"]))]
-            payload_thunk = lambda: { "value1": value_thunks[0](), "value2": value_thunks[1](), "value3": value_thunks[2]() }
+            payload_thunk = lambda: { "trigger_names": trigger_names, "value1": value_thunks[0](), "value2": value_thunks[1](), "value3": value_thunks[2]() }
+
+            if webhook:
+                payload = payload_thunk()
+                self._logger.info("sending a request to url: %s, payload: %s" % (webhook, payload))
+
+                response = requests.post(webhook, json=payload)
+                self._logger.info("response: " + response.text)
 
             for trigger_name in trigger_names:
-                if webhook:
-                    payload = payload_thunk()
-                    self._logger.info("sending a request to url: %s, payload: %s" % (webhook, payload))
-
-                    response = requests.post(webhook, json=payload)
-                    self._logger.info("response: " + response.text)
-
                 for makerkey in makerkeys:
                     payload = payload_thunk()
                     url = "https://maker.ifttt.com/trigger/%s/with/key/%s" % (trigger_name, makerkey)
